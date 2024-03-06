@@ -63,10 +63,10 @@ Following these steps will result in the provisioning of the AKS multi cluster s
         echo SUBSCRIPTION_ID: $SUBSCRIPTION_ID
 
         # Assign built-in Contributor RBAC role for creating resource groups and performing deployments at subscription level
-        az role assignment create --assignee $GITHUB_FEDERATED_IDENTITY_PRINCIPALID --role 'Contributor' --scope '/subscriptions/$SUBSCRIPTION_ID'
+        az role assignment create --assignee $GITHUB_FEDERATED_IDENTITY_PRINCIPALID --role 'Contributor' --scope /subscriptions/$SUBSCRIPTION_ID
 
         # Assign built-in User Access Administrator RBAC role since granting RBAC access to other resources during the cluster creation will be required at subscription level (such as AKS-managed Internal Load Balancer, Azure Container Registry, Managed Identities, etc.)
-        az role assignment create --assignee $GITHUB_FEDERATED_IDENTITY_PRINCIPALID --role 'User Access Administrator' --scope '/subscriptions/$SUBSCRIPTION_ID'
+        az role assignment create --assignee $GITHUB_FEDERATED_IDENTITY_PRINCIPALID --role 'User Access Administrator' --scope /subscriptions/$SUBSCRIPTION_ID
         ```
 
     1. Create federated identity secrets in your GitHub repository.
