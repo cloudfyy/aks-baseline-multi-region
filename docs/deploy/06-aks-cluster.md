@@ -36,8 +36,8 @@ Following these steps will result in the provisioning of the AKS multi cluster s
 1. Upload images to your Azure Container Registry that are referenced bootstrapping.
 
     ```bash
-    az acr import --source docker.io/weaveworks/kured:1.14.0 -n $ACR_NAME_AKS_MRB --force
-    az acr import --source docker.io/library/traefik:v2.10.4 -n $ACR_NAME_AKS_MRB --force
+    az acr import --source ghcr.io/kubereboot/kured:1.14.0 -n $ACR_NAME_AKS_MRB --force
+    az acr import --source docker.io/library/traefik:v2.10.7 -n $ACR_NAME_AKS_MRB --force
     ```
 
 1. Get the corresponding AKS cluster spoke VNet resource IDs for the app team working on the application A0042.
