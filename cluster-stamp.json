@@ -93,7 +93,7 @@
             }
         },
         "kubernetesVersion": {
-            "defaultValue": "1.27.3",
+            "defaultValue": "1.27.9",
             "type": "string"
         },
         "gitOpsBootstrappingRepoHttpsUrl": {
