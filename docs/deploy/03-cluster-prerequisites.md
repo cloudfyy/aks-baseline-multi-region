@@ -27,7 +27,7 @@ Following these steps will result in the provisioning of the shared Azure resour
 1. Check for a pre-existing resource group with the name NetworkWatcherRG, if it doesn't exist then create it.
 
     ```bash
-    if [ $(az group exists --name NetworkWatcherRG) = false]; then
+    if [ $(az group exists --name NetworkWatcherRG) = false ]; then
     az group create --name NetworkWatcherRG --location centralus
     fi
     ```
