@@ -812,7 +812,7 @@
         },
         {
             "type": "Microsoft.ContainerService/managedClusters",
-            "apiVersion": "2022-03-02-preview",
+            "apiVersion": "2023-03-02-preview",
             "name": "[variables('clusterName')]",
             "location": "[parameters('location')]",
             "tags": {
