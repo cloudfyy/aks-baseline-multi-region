@@ -835,7 +835,7 @@
                     {
                         "name": "npsystem",
                         "count": 3,
-                        "vmSize": "Standard_DS2",
+                        "vmSize": "Standard_D2_V3",
                         "osDiskSizeGB": 80,
                         "osDiskType": "Ephemeral",
                         "osType": "Linux",
@@ -852,7 +852,6 @@
                         "maxPods": 30,
                         "availabilityZones": [
                             "1",
-                            "2",
                             "3"
                         ],
                         "upgradeSettings": {
@@ -862,7 +861,7 @@
                     {
                         "name": "npuser01",
                         "count": 2,
-                        "vmSize": "Standard_DS2",
+                        "vmSize": "Standard_D2_V3",
                         "osDiskSizeGB": 120,
                         "osDiskType": "Ephemeral",
                         "osType": "Linux",
@@ -879,7 +878,6 @@
                         "maxPods": 30,
                         "availabilityZones": [
                             "1",
-                            "2",
                             "3"
                         ],
                         "upgradeSettings": {
