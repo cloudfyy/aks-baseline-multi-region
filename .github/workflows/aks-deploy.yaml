@@ -43,6 +43,37 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+    # -----------------------REGION2------------------------------------------------
+    # Deploy the cluster into your environment, assuming all prerequisites are up and running.
+    - name: Azure CLI - Deploy AKS cluster - Region 2
+      id: aks-cluster-region2
+      if: success() && env.DEPLOY_REGION2 == 'true'
+      uses: Azure/cli@v1.0.0
+      with:
+        inlineScript: |
+         az group create --name rg-bu0001a0042-04 --location centralus
+         az deployment group create --resource-group rg-bu0001a0042-04 \
+            --template-file "cluster-stamp.json" \
+            --parameters @azuredeploy.parameters.centralus.json \
+              appGatewayListenerCertificate=${{ secrets.APP_GATEWAY_LISTENER_REGION2_CERTIFICATE_BASE64 }} \
+              aksIngressControllerCertificate=${{ secrets.AKS_INGRESS_CONTROLLER_CERTIFICATE_BASE64 }}
+
+          echo "::set-output name=name::$(az deployment group show --resource-group rg-bu0001a0042-04 -n cluster-stamp --query properties.outputs.aksClusterName.value -o tsv)"
+        azcliversion: 2.52.0
+
+    - name: Azure CLI - Enroll Azure Application Gateway as backend in Azure Front Door - Region 2
+      id: enrol-cluster-2
+      if: success() && env.DEPLOY_REGION2 == 'true'
+      uses: Azure/cli@v1.0.0
+      with:
+        inlineScript: |
+          az extension add --upgrade -n front-door
+          APPGW_FQDN_BU0001A0042_04=$(az deployment group show -g rg-enterprise-networking-spokes -n spoke-BU0001A0042-04 --query properties.outputs.appGwFqdn.value -o tsv)
+          FRONT_DOOR_NAME=$(az deployment group show -g rg-bu0001a0042-shared -n shared-svcs-stamp --query properties.outputs.frontDoorName.value -o tsv)
+          FRONT_DOOR_BACKENDPOOL_NAME=$(az deployment group show -g rg-bu0001a0042-shared -n shared-svcs-stamp --query properties.outputs.frontDoorBackendPoolName.value -o tsv)
+          az network front-door backend-pool backend add --address $APPGW_FQDN_BU0001A0042_04 --front-door-name $FRONT_DOOR_NAME --pool-name $FRONT_DOOR_BACKENDPOOL_NAME -g rg-bu0001a0042-shared --backend-host-header $APPGW_FQDN_BU0001A0042_04 --disabled false --http-port 80 --https-port 443  --priority 1 --weight 50
+        azcliversion: 2.52.0
     # -----------------------REGION1------------------------------------------------
     # Deploy the cluster into your environment, assuming all prerequisites are up and running.
     - name: Azure CLI - Deploy AKS cluster - Region 1
@@ -74,33 +105,3 @@ jobs:
           az network front-door backend-pool backend add --address $APPGW_FQDN_BU0001A0042_03 --front-door-name $FRONT_DOOR_NAME --pool-name $FRONT_DOOR_BACKENDPOOL_NAME -g rg-bu0001a0042-shared --backend-host-header $APPGW_FQDN_BU0001A0042_03 --disabled false --http-port 80 --https-port 443  --priority 1 --weight 50
         azcliversion: 2.52.0
 
-    # -----------------------REGION2------------------------------------------------
-    # Deploy the cluster into your environment, assuming all prerequisites are up and running.
-    - name: Azure CLI - Deploy AKS cluster - Region 2
-      id: aks-cluster-region2
-      if: success() && env.DEPLOY_REGION2 == 'true'
-      uses: Azure/cli@v1.0.0
-      with:
-        inlineScript: |
-         az group create --name rg-bu0001a0042-04 --location centralus
-         az deployment group create --resource-group rg-bu0001a0042-04 \
-            --template-file "cluster-stamp.json" \
-            --parameters @azuredeploy.parameters.centralus.json \
-              appGatewayListenerCertificate=${{ secrets.APP_GATEWAY_LISTENER_REGION2_CERTIFICATE_BASE64 }} \
-              aksIngressControllerCertificate=${{ secrets.AKS_INGRESS_CONTROLLER_CERTIFICATE_BASE64 }}
-
-          echo "::set-output name=name::$(az deployment group show --resource-group rg-bu0001a0042-04 -n cluster-stamp --query properties.outputs.aksClusterName.value -o tsv)"
-        azcliversion: 2.52.0
-
-    - name: Azure CLI - Enroll Azure Application Gateway as backend in Azure Front Door - Region 2
-      id: enrol-cluster-2
-      if: success() && env.DEPLOY_REGION2 == 'true'
-      uses: Azure/cli@v1.0.0
-      with:
-        inlineScript: |
-          az extension add --upgrade -n front-door
-          APPGW_FQDN_BU0001A0042_04=$(az deployment group show -g rg-enterprise-networking-spokes -n spoke-BU0001A0042-04 --query properties.outputs.appGwFqdn.value -o tsv)
-          FRONT_DOOR_NAME=$(az deployment group show -g rg-bu0001a0042-shared -n shared-svcs-stamp --query properties.outputs.frontDoorName.value -o tsv)
-          FRONT_DOOR_BACKENDPOOL_NAME=$(az deployment group show -g rg-bu0001a0042-shared -n shared-svcs-stamp --query properties.outputs.frontDoorBackendPoolName.value -o tsv)
-          az network front-door backend-pool backend add --address $APPGW_FQDN_BU0001A0042_04 --front-door-name $FRONT_DOOR_NAME --pool-name $FRONT_DOOR_BACKENDPOOL_NAME -g rg-bu0001a0042-shared --backend-host-header $APPGW_FQDN_BU0001A0042_04 --disabled false --http-port 80 --https-port 443  --priority 1 --weight 50
-        azcliversion: 2.52.0
