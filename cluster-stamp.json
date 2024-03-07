@@ -985,8 +985,8 @@
                 }
             },
             "sku": {
-                "name": "Standard",
-                "tier": "Paid"
+                "name": "Base",
+                "tier": "Standard"
             },
             "resources": [
                 {
