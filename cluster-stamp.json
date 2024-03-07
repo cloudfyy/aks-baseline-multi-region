@@ -835,7 +835,7 @@
                     {
                         "name": "npsystem",
                         "count": 3,
-                        "vmSize": "Standard_D2_v4",
+                        "vmSize": "Standard_DS2",
                         "osDiskSizeGB": 80,
                         "osDiskType": "Ephemeral",
                         "osType": "Linux",
