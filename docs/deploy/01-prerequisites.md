@@ -43,7 +43,7 @@ This is the starting point for the instructions on deploying the [AKS baseline m
 1. Get your GitHub username
 
    ```bash
-   export GITHUB_USER_NAME_AKS_MRB=$(echo $(gh auth status 2>&1) | sed "s#.*as \(.*\) (.*#\1#")
+   export GITHUB_USER_NAME_AKS_MRB=<your github login name>
    echo GITHUB_USER_NAME_AKS_MRB: $GITHUB_USER_NAME_AKS_MRB
    ```
 
