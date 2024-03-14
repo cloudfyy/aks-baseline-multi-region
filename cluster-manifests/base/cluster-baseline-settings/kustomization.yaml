@@ -4,5 +4,5 @@ resources:
 - ns.yaml
 - kured.yaml
 images:
-- name: docker.io/weaveworks/kured
+- name: ghcr.io/kubereboot/kured
   newName: acraksixk5l24u3y3lg.azurecr.io/weaveworks/kured
