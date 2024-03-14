@@ -137,7 +137,7 @@ Following these steps will result in the provisioning of the AKS multi cluster s
         sed -i "s#<container-registry-id>#${CONTAINERREGISTRYID}#g" ./azuredeploy.parameters.centralus.json && \
         sed -i "s#<your-github-org>#${GITHUB_USER_NAME_AKS_MRB}#g" ./azuredeploy.parameters.centralus.json
         ```
-         Update kured.yaml:
+         Update kured.yaml (under folder ./cluster-manifests/base/cluster-baseline-settings/):
 
         ```bash
         
@@ -145,6 +145,8 @@ Following these steps will result in the provisioning of the AKS multi cluster s
         ```
 
     1. Customize your GitOps manifests to pull images from your private Azure Container Registry.
+
+        The kustomization.yaml is under ./cluster-manifests/base/cluster-baseline-settings/
 
         ```bash
         find . -type f -name "kustomization.yaml" -exec sed -i "s/REPLACE_ME_WITH_YOUR_ACRNAME/${ACR_NAME_AKS_MRB}/" {} +
