@@ -5,4 +5,4 @@ resources:
 - kured.yaml
 images:
 - name: ghcr.io/kubereboot/kured
-  newName: REPLACE_ME_WITH_YOUR_ACRNAME.azurecr.io/weaveworks/kured
+  newName: acraksixk5l24u3y3lg.azurecr.io/weaveworks/kured
